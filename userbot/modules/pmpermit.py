@@ -22,10 +22,12 @@ from userbot.events import register
 
 # ========================= CONSTANTS ============================
 UNAPPROVED_MSG = (
-    "`HeY! This is an automated message.\n\n`"
-    "`I haven't approved you to PM yet.`"
-    "`Please wait for me to look in, I mostly approve PMs.\n\n`"
-    "`Until then, please don't spam my Mastor's PM, you'll get blocked and reported if you do so!`"
+    "`Halo, Saya BotNya @XHIDROLIC.\n\n`"
+    "`Sabar Dulu Ya :).\n\n`"
+    "`Jika Ada Sesuatu Yang Ingin Di Bicarakan Mohon Tunggu Bos Saya Sebentar.\n\n`"
+    "`Tunggu Sampai Bos Saya Membalan Pesan Anda,Tolong Jangan Spam Ya.\n\n`"
+    "`Terimakasih Atas Pengertiannya, Semoga Harimu Menyenangkan :).\n\n`"
+    "`Bot By @XHIDROLIC`"
 )
 # =================================================================
 
@@ -77,8 +79,8 @@ async def permitpm(event):
 
             if COUNT_PM[event.chat_id] > 4:
                 await event.respond(
-                    "`You were spamming my Mastor's PM, which I didn't like.`\n"
-                    "`You have been BLOCKED and reported as SPAM, until further notice.`"
+                    "`Maaf Anda Terpaksa Saya Blockir,Karena Anda Menganggu Bos Saya`\n"
+                    "`Tunggu Sampai Bos Saya Membuka Blokir Untuk Mengirim Pesan Kembali`"
                 )
 
                 try:
@@ -105,7 +107,7 @@ async def permitpm(event):
                         + "](tg://user?id="
                         + str(event.chat_id)
                         + ")"
-                        + " was just another retarded nibba",
+                        + " Telah Terblockir",
                     )
 
 
@@ -196,9 +198,9 @@ async def approvepm(apprvpm):
     try:
         approve(uid)
     except IntegrityError:
-        return await apprvpm.edit("`User may already be approved.`")
+        return await apprvpm.edit("`Pengguna Berhasil Diperbolehkan Bos Saya Untuk PM!`")
 
-    await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `approved to PM!`")
+    await apprvpm.edit(f"[{name0}](tg://user?id={uid}) `Diperbolehkan Bos Saya Untuk PM!`")
 
     async for message in apprvpm.client.iter_messages(
         apprvpm.chat_id, from_user="me", search=UNAPPROVED_MSG
@@ -230,14 +232,14 @@ async def disapprovepm(disapprvpm):
         name0 = str(aname.first_name)
 
     await disapprvpm.edit(
-        f"[{name0}](tg://user?id={disapprvpm.chat_id}) `Disaproved to PM!`"
+        f"[{name0}](tg://user?id={disapprvpm.chat_id}) `Tidak Diperbolehkan Bos Saya Untuk PM!`"
     )
 
     if BOTLOG:
         await disapprvpm.client.send_message(
             BOTLOG_CHATID,
             f"[{name0}](tg://user?id={disapprvpm.chat_id})"
-            " was disapproved to PM you.",
+            " Tidak Diperbolehkan Untuk PM Bos Saya.",
         )
 
 
@@ -250,12 +252,12 @@ async def blockpm(block):
         aname = replied_user.id
         name0 = str(replied_user.first_name)
         await block.client(BlockRequest(aname))
-        await block.edit("`You've been blocked!`")
+        await block.edit("`Kamu Telah DiBlockir Bos Saya!`")
         uid = replied_user.id
     else:
         await block.client(BlockRequest(block.chat_id))
         aname = await block.client.get_entity(block.chat_id)
-        await block.edit("`You've been blocked!`")
+        await block.edit("`Kamu Telah Diblockir Bos Saya!`")
         name0 = str(aname.first_name)
         uid = block.chat_id
 
@@ -280,7 +282,7 @@ async def unblockpm(unblock):
         replied_user = await unblock.client.get_entity(reply.from_id)
         name0 = str(replied_user.first_name)
         await unblock.client(UnblockRequest(replied_user.id))
-        await unblock.edit("`You have been unblocked.`")
+        await unblock.edit("`Kamu Telah Di Unblockir Bos Saya!`")
 
     if BOTLOG:
         await unblock.client.send_message(
